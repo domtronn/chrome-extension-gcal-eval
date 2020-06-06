@@ -1,0 +1,27 @@
+.popup-padded {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.container {
+  min-width: 720px;
+}
+
+.container .chart__segment {
+  cursor: pointer;
+}
+
+.legend {
+  display: flex;
+  align-items: center;
+}
+
+.legend__square {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  border: 1px solid #2b2b2b;
+  margin-right: 8px;
+}

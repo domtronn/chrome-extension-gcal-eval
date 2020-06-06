@@ -1,0 +1,41 @@
+{
+  "extends": [
+    "standard",
+    "prettier",
+    "prettier/standard",
+    "plugin:security/recommended",
+    "react-app",
+    "plugin:jsx-a11y/recommended",
+    "plugin:jsx-control-statements/recommended",
+    "plugin:jest/recommended",
+    "prettier-standard/end"
+  ],
+  "plugins": [
+    "import",
+    "prettier",
+    "standard",
+    "security",
+    "jest",
+    "jsx-a11y",
+    "jsx-control-statements",
+    "react",
+    "unicorn"
+  ],
+  "rules": {
+    "no-magic-numbers": ["warn", { "ignoreArrayIndexes": true, "ignore": [0]}], 
+    "func-names": ["error", "always"],
+    "react/jsx-no-undef": [2, { "allowGlobals": true }],
+    "unicorn/filename-case": ["error", { "case": "kebabCase" }],
+    "prettier/prettier": 2,
+    "security/detect-non-literal-fs-filename": 0,
+    "security/detect-object-injection": 0,
+    "security/detect-unsafe-regex": 0
+  },
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "node": true,
+    "es6": true,
+    "jest": true
+  }
+}

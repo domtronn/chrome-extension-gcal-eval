@@ -1,38 +1,40 @@
 {
-    "name": "TS/R/WP Chrome Extension",
-    "version": "0.0.1",
-    "manifest_version": 2,
-    "description": "Boilerplate for a Chrome extension with TypeScript, React, and Webpack.",
-    "homepage_url": "https://duo.com/labs",
-    "icons": {
-      "16": "icons/icon16.png",
-      "48": "icons/icon48.png",
-      "128": "icons/icon128.png"
-    },
-    "browser_action": {
-      "default_title": "TSRWPCX",
-      "default_popup": "popup.html"
-    },
-    "default_locale": "en",
-    "background": {
-      "scripts": [
-        "js/background.js"
-      ],
-      "persistent": true
-    },
-    "permissions": [
-      "https://*/*"
+  "name": "GCal Eval",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "description": "Chrome extension to analyse your google calendar colour coding",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "browser_action": {
+    "default_title": "GCal Eval",
+    "default_popup": "popup.html"
+  },
+  "options_page": "options.html", 
+  "background": {
+    "scripts": [
+      "js/background.js"
     ],
-    "content_security_policy": "default-src 'self';",
-    "content_scripts": [
-      {
-        "matches": [
-          "https://*/*"
-        ],
-        "js": [
-          "js/content.js"
-        ]
-      }
-    ]
-  }
-  
+    "persistent": true
+  },
+  "permissions": [
+    "storage", 
+    "https://calendar.google.com/calendar/*",
+    "http://fonts.googleapis.com/",
+    "https://fonts.googleapis.com/"
+  ],
+  "content_security_policy": "default-src 'self'; style-src-elem 'unsafe-inline'; style-src 'unsafe-inline';",
+  "content_scripts": [
+    {
+      "matches": [
+        "https://calendar.google.com/calendar/*"
+      ],
+      "js": [
+        "js/content.js"
+      ]
+    }
+  ]
+}
+
