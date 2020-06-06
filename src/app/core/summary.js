@@ -13,17 +13,31 @@ var summary = (totalTime, res, config = {}) => {
 
   const result = Object.entries(sum)
     .filter(([key]) => key !== "null")
-    .filter(([, val]) => val > 0)
+    .filter(([key, val]) => {
+      console.log(key, val)
+      return val > 0
+    })
     .map(([key, val]) => [
       config[key] || key,
       key,
-      Math.floor((val / totalTime) * 100),
+      Math.ceil((val / totalTime) * 100),
       { h: new Date(val).getHours() - 1, m: new Date(val).getMinutes() },
     ])
 
   const remaining = 100 - result.reduce((acc, [, , value]) => acc + value, 0)
 
-  return [["free", "#ffffff", remaining], ...result]
+  return [
+    [
+      config["#fff"] || config["#ffffff"] || "Free time",
+      "#ffffff",
+      remaining,
+      {
+        h: new Date((remaining / 100) * totalTime).getHours() - 1,
+        m: new Date((remaining / 100) * totalTime).getMinutes(),
+      },
+    ],
+    ...result,
+  ]
 }
 
 /**
@@ -41,9 +55,19 @@ export const daily = (dayStart, dayEnd, config) => {
 }
 
 export const weekly = (dayStart, dayEnd, config) => {
+  const totalEvents = getMeetingsForDays({ dayStart, dayEnd }).reduce(
+    (acc, { total }) => acc + parseInt(total),
+    0
+  )
+
   const totalTime =
     (twelveHourToDate(dayEnd) - twelveHourToDate(dayStart)) * getDays()
+
   const res = getMeetings(document, { dayStart, dayEnd })
 
-  return summary(totalTime, res, config)
+  return {
+    day: "Weekly",
+    total: `${totalEvents} events`,
+    summary: summary(totalTime, res, config),
+  }
 }

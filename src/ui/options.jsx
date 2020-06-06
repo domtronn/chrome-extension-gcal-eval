@@ -82,7 +82,7 @@ const Settings = ({ summary, config = {} }) => {
       <h2>Colors in your last GCal</h2>
       <form noValidate autoComplete="off">
         <Grid container spacing={3}>
-          {summary.weekly.map(([, col], i) => (
+          {summary.weekly.summary.map(([, col], i) => (
             <Grid item xs={4} key={i}>
               <div className="config__item">
                 <div

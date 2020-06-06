@@ -5,7 +5,7 @@ export const highlight = (color, day) => {
   selectDays().forEach((column) => {
     selectMeetings(column).forEach((node) => {
       if (
-        (!day || column.innerText.includes(day)) &&
+        (day === "Weekly" || column.innerText.includes(day)) &&
         rgbToHex(node.style["background-color"]) === color
       ) {
         node.style.opacity = 1

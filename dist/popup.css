@@ -15,13 +15,19 @@ body {
   min-width: 720px;
 }
 
-.container .chart__segment {
+.container .chart__segment--color {
   cursor: pointer;
+}
+
+.container .chart__segment {
+  -webkit-box-shadow: 1px 2px 3px 1px rgba(210,210,210,0.5);
+  -moz-box-shadow: 1px 2px 3px 1px rgba(210,210,210,0.5);
+  box-shadow: 1px 2px 3px 1px rgba(210,210,210,0.5);
 }
 
 .legend {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .legend__square {
@@ -29,7 +35,7 @@ body {
   height: 18px;
   border-radius: 50%;
   margin-right: 8px;
-  -webkit-box-shadow: 1px 1px 2px 1px rgba(210,210,210,1);
-  -moz-box-shadow: 1px 1px 2px 1px rgba(210,210,210,1);
-  box-shadow: 1px 1px 2px 1px rgba(210,210,210,1);
+  -webkit-box-shadow: 1px 2px 3px 1px rgba(210,210,210,0.5);
+  -moz-box-shadow: 1px 2px 3px 1px rgba(210,210,210,0.5);
+  box-shadow: 1px 2px 3px 1px rgba(210,210,210,0.5);
 }

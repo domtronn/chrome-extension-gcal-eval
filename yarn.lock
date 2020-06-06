@@ -979,6 +979,13 @@
     react-is "^16.8.0"
     react-transition-group "^4.4.0"
 
+"@material-ui/icons@^4.9.1":
+  version "4.9.1"
+  resolved "https://registry.yarnpkg.com/@material-ui/icons/-/icons-4.9.1.tgz#fdeadf8cb3d89208945b33dbc50c7c616d0bd665"
+  integrity sha512-GBitL3oBWO0hzBhvA9KxqcowRUsA0qzwKkURyC8nppnC3fw54KPKZ+d4V1Eeg/UnDRSzDaI9nGCdel/eh9AQMg==
+  dependencies:
+    "@babel/runtime" "^7.4.4"
+
 "@material-ui/styles@^4.10.0":
   version "4.10.0"
   resolved "https://registry.yarnpkg.com/@material-ui/styles/-/styles-4.10.0.tgz#2406dc23aa358217aa8cc772e6237bd7f0544071"
@@ -1091,7 +1098,7 @@
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.3.tgz#2ab0d5da2e5815f94b0b9d4b95d1e5f243ab2ca7"
   integrity sha512-KfRL3PuHmqQLOG+2tGpRO26Ctg+Cq1E01D2DMriKEATHgWLfeNDmq9e29Q9WIky0dQ3NPkd1mzYH8Lm936Z9qw==
 
-"@types/react-dom@^16.0.11":
+"@types/react-dom@*", "@types/react-dom@^16.0.11":
   version "16.9.8"
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-16.9.8.tgz#fe4c1e11dfc67155733dfa6aa65108b4971cb423"
   integrity sha512-ykkPQ+5nFknnlU6lDd947WbQ6TE3NNzbQAkInC2EKY1qeYdTKp7onFusmYZb+ityzx2YviqT6BXSu+LyWWJwcA==
@@ -1180,6 +1187,15 @@
     semver "^7.3.2"
     tsutils "^3.17.1"
 
+"@vx/bounds@0.0.197":
+  version "0.0.197"
+  resolved "https://registry.yarnpkg.com/@vx/bounds/-/bounds-0.0.197.tgz#bf7ba8572900b2249c138d9b4d5ef70e2d6857af"
+  integrity sha512-9e8YB0tX5AcxxnhqS1H/x9GmYdXEZiHTK3y/HZFEYL1d5IWpuyhFzFW6XHnHvC4+3gjlmD9diWBfE8PYlKs4xw==
+  dependencies:
+    "@types/react" "*"
+    "@types/react-dom" "*"
+    prop-types "^15.5.10"
+
 "@vx/curve@0.0.197":
   version "0.0.197"
   resolved "https://registry.yarnpkg.com/@vx/curve/-/curve-0.0.197.tgz#4ff4c095e4e86e112a5589ebb1d0ddcddcfbdb6a"
@@ -1187,6 +1203,14 @@
   dependencies:
     "@types/d3-shape" "^1.3.1"
     d3-shape "^1.0.6"
+
+"@vx/event@^0.0.197":
+  version "0.0.197"
+  resolved "https://registry.yarnpkg.com/@vx/event/-/event-0.0.197.tgz#4aff7648deae894f13dbfdd07b28d65b15d77d92"
+  integrity sha512-XXoehTuQArxCVCfjr0I2hVKu8uy9wMXNn413LHZV5z7Vsyabut9opsqdMriF/OjX4W6a3pigHqetYS2DP1VAaA==
+  dependencies:
+    "@types/react" "*"
+    "@vx/point" "0.0.197"
 
 "@vx/group@0.0.197", "@vx/group@^0.0.197":
   version "0.0.197"
@@ -1197,6 +1221,11 @@
     "@types/react" "*"
     classnames "^2.2.5"
     prop-types "^15.6.2"
+
+"@vx/point@0.0.197":
+  version "0.0.197"
+  resolved "https://registry.yarnpkg.com/@vx/point/-/point-0.0.197.tgz#3685097b213d7abc301c87294931e96148821599"
+  integrity sha512-1CO2MM6HdAqE11gUk56uufBEkgbChdvzvePCsRCbA2a4KyvfLHxEICjycF+RRjRU5rlpMN97uxEcIReRI+WmIQ==
 
 "@vx/shape@^0.0.197":
   version "0.0.197"
@@ -1212,6 +1241,17 @@
     classnames "^2.2.5"
     d3-path "^1.0.5"
     d3-shape "^1.2.0"
+    prop-types "^15.5.10"
+
+"@vx/tooltip@^0.0.197":
+  version "0.0.197"
+  resolved "https://registry.yarnpkg.com/@vx/tooltip/-/tooltip-0.0.197.tgz#66800a5528b55d5f4a0f64e6bf020b41794c51e1"
+  integrity sha512-BYCHC7uuPwltOFdasEResjJXdLoVEZXmpq6p1rIKuVZ2T5u0f7WIyXduOok/brInWZk9LbuESGdEemls5012sw==
+  dependencies:
+    "@types/classnames" "^2.2.9"
+    "@types/react" "*"
+    "@vx/bounds" "0.0.197"
+    classnames "^2.2.5"
     prop-types "^15.5.10"
 
 "@webassemblyjs/ast@1.9.0":

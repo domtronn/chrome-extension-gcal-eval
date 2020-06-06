@@ -9,8 +9,12 @@ import { debounce } from "../app/utils/debounce"
 import { sendMessage } from "../app/utils/chrome-message"
 import { get } from "../app/utils/chrome-storage"
 
+import Fab from "@material-ui/core/Fab"
+import BuildIcon from "@material-ui/icons/Build"
+
 import Tab from "@material-ui/core/Tab"
 import Tabs from "@material-ui/core/Tabs"
+import AppBar from "@material-ui/core/AppBar"
 import Divider from "@material-ui/core/Divider"
 import Grid from "@material-ui/core/Grid"
 
@@ -18,10 +22,18 @@ import { makeStyles } from "@material-ui/core/styles"
 
 import { Group } from "@vx/group"
 import { Pie } from "@vx/shape"
+import { localPoint } from "@vx/event"
+import { useTooltip, TooltipWithBounds } from "@vx/tooltip"
 
 const useStyles = makeStyles({
-  wrapper: {
-    alignItems: "flex-start",
+  fab: {
+    position: "absolute",
+    top: 24,
+    right: 16,
+  },
+  tab: {
+    minWidth: 100,
+    maxWidth: 100,
   },
 })
 
@@ -34,18 +46,37 @@ const Leg = ({ data }) => (
   <div style={{ marginTop: "24px" }}>
     <Grid container spacing={3}>
       {data.map(([label, color, value, t], i) => (
-        <Grid item xs={6} key={i}>
+        <Grid item xs={4} key={i}>
           <div className="legend">
             <div
               className="legend__square"
               style={{ backgroundColor: color }}
             />
             <div className="legend__text">
-              {!t
-                ? `${value}% - ${label}`
-                : t.h > 0
-                ? `${t.h}hr${t.m}m ${value}% - ${label}`
-                : `${t.m}m ${value}% - ${label}`}
+              <span
+                style={{
+                  fontSize: 16,
+                }}
+              >
+                {label}
+              </span>
+              <div style={{ paddingTop: 8 }}>
+                <span>
+                  <b style={{ fontSize: 16 }}>{value}</b>%
+                  <span style={{ marginLeft: 8 }}>
+                    {t && t.h > 0 && (
+                      <span>
+                        <span style={{ fontSize: 16 }}>{t.h}</span>hr
+                      </span>
+                    )}
+                    {t && t.m > 0 && (
+                      <span>
+                        <span style={{ fontSize: 16 }}>{t.m}</span>m
+                      </span>
+                    )}
+                  </span>
+                </span>
+              </div>
             </div>
           </div>
         </Grid>
@@ -55,11 +86,20 @@ const Leg = ({ data }) => (
 )
 
 const Chart = ({ data, day, size }) => {
-  const width = 532 * size
+  const width = 664 * size
   const height = 220
   const cy = height / 2
   const cx = width / 2
   const radius = Math.min(width, height) / 2
+
+  const {
+    tooltipOpen,
+    tooltipLeft,
+    tooltipTop,
+    tooltipData,
+    showTooltip,
+    hideTooltip,
+  } = useTooltip()
 
   const mapped = data.map(([label, color, value]) => ({
     label: label === "null" ? "" : label,
@@ -67,31 +107,48 @@ const Chart = ({ data, day, size }) => {
     value,
   }))
 
-  const sendHighlight = debounce((args) => sendMessage(args), 50)
+  const sendHighlight = debounce((args) => {
+    sendMessage(args)
+    args.type === "unhighlight" ? hideTooltip() : showTooltip(args.tooltip)
+  }, 50)
 
   return (
-    <svg className="chart" width={width} height={height}>
-      <Group top={cy} left={cx}>
-        <Pie
-          className="chart"
-          data={mapped}
-          outerRadius={radius - 8}
-          pieValue={({ value }) => value / 100}
-          pieSortValues={(a, b) => a.value - b.value}
-        >
-          {(pie) =>
-            pie.arcs.map((arc, i) => {
-              const [centroidX, centroidY] = pie.path.centroid(arc)
-              return (
+    <>
+      <svg className="chart" width={width} height={height}>
+        <Group top={cy} left={cx}>
+          <Pie
+            className="chart"
+            data={mapped}
+            outerRadius={radius - 8}
+            pieValue={({ value }) => value / 100}
+            pieSortValues={(a, b) => a.value - b.value}
+          >
+            {(pie) =>
+              pie.arcs.map((arc, i) => (
                 <g
-                  className="chart__segment"
+                  className={
+                    arc.data.color === "#fff" || arc.data.color === "#ffffff"
+                      ? "chart__segment chart__segment--white"
+                      : "chart__segment chart__segment--color"
+                  }
                   key={`letters-${arc.data.label}-${i}`}
                 >
                   <path
-                    onMouseOver={() => {
-                      if (arc.data.label === "free") return
+                    onMouseOver={(evt, datum) => {
+                      if (
+                        arc.data.color === "#fff" ||
+                        arc.data.color === "#ffffff"
+                      )
+                        return
+                      const coords = localPoint(evt.target.ownerSVGElement, evt)
+
                       sendHighlight({
                         type: "highlightCategory",
+                        tooltip: {
+                          tooltipLeft: coords.x,
+                          tooltipTop: coords.y,
+                          tooltipData: arc.data,
+                        },
                         ...arc.data,
                         day,
                       })
@@ -100,27 +157,22 @@ const Chart = ({ data, day, size }) => {
                     d={pie.path(arc)}
                     fill={arc.data.color}
                   />
-                  <text
-                    fill={
-                      arc.data.label === "free"
-                        ? "#fff"
-                        : adjustCol(arc.data.color, -70)
-                    }
-                    textAnchor="middle"
-                    x={centroidX}
-                    y={centroidY}
-                    dy=".33em"
-                    fontSize={12}
-                  >
-                    {arc.data.value}%
-                  </text>
                 </g>
-              )
-            })
-          }
-        </Pie>
-      </Group>
-    </svg>
+              ))
+            }
+          </Pie>
+        </Group>
+      </svg>
+      {tooltipOpen && (
+        <TooltipWithBounds
+          key={Math.random()}
+          top={tooltipTop}
+          left={tooltipLeft}
+        >
+          {tooltipData.label} - <strong>{tooltipData.value}%</strong>
+        </TooltipWithBounds>
+      )}
+    </>
   )
 }
 
@@ -147,57 +199,47 @@ const Popup = () => {
 
   return (
     <div className="container">
-      <Grid container spacing={3}>
-        <Grid item xs={2}>
-          <Tabs
-            indicatorColor="secondary"
-            textColor="secondary"
-            orientation="vertical"
-            value={tab}
-            onChange={(_, newTab) => setTab(newTab)}
-          >
-            <Tab label="Weekly" classes={{ wrapper: classes.wrapper }} />
-            {summary.daily.map(({ day }, i) => (
-              <Tab
-                key={i}
-                label={day.slice(0, 3)}
-                classes={{ wrapper: classes.wrapper }}
-              />
-            ))}
-          </Tabs>
-        </Grid>
+      <AppBar color="transparent">
+        <Tabs
+          indicatorColor="secondary"
+          textColor="secondary"
+          value={tab}
+          onChange={(_, newTab) => setTab(newTab)}
+        >
+          <Tab label="Weekly" classes={{ root: classes.tab }} />
+          {summary.daily.map(({ day }, i) => (
+            <Tab
+              key={i}
+              label={day.slice(0, 3)}
+              classes={{ root: classes.tab }}
+            />
+          ))}
+        </Tabs>
+        <Fab
+          onClick={() => chrome.tabs.create({ url: "/options.html" })}
+          color="secondary"
+          className={classes.fab}
+          size="small"
+        >
+          <BuildIcon />
+        </Fab>
+      </AppBar>
 
-        <Grid item xs={10}>
-          {[{ summary: summary.weekly }]
-            .concat(summary.daily)
-            .map(({ day, total, summary }, i) => (
-              <TabPanel key={i} value={tab} index={i}>
-                <Grid
-                  style={{ marginTop: "20px", marginBottom: "20px" }}
-                  spacing={3}
-                  container
-                >
-                  <Grid item xs={4}>
-                    <Chart size={4 / 12} data={summary} day={day} />
-                  </Grid>
-                  <Grid item xs={8}>
-                    {total && (
-                      <span>
-                        <b>{day}</b> - {total}
-                      </span>
-                    )}
-                    {!total && (
-                      <span>
-                        <b>Weekly</b>
-                      </span>
-                    )}
-                    <Divider style={{ margin: "16px 0" }} />
-                    <Leg data={summary} />
-                  </Grid>
-                </Grid>
-              </TabPanel>
-            ))}
-        </Grid>
+      <Grid style={{ padding: "70px 20px 20px" }} container spacing={3}>
+        {[summary.weekly]
+          .concat(summary.daily)
+          .map(({ day, total, summary }, i) => (
+            <TabPanel key={i} value={tab} index={i}>
+              <Grid item xs={4}>
+                <Chart size={4 / 12} data={summary} day={day} />
+              </Grid>
+              <Grid item xs={8}>
+                <h2>{total}</h2>
+                <Divider style={{ margin: "16px 0" }} />
+                <Leg data={summary} />
+              </Grid>
+            </TabPanel>
+          ))}
       </Grid>
     </div>
   )
