@@ -2,29 +2,24 @@ import sw from './utils/switch'
 import { weekly, daily } from './core/summary'
 import { highlight, unhighlight } from './core/modifications'
 
-import { set } from './utils/chrome-storage'
+import { set, get } from './utils/chrome-storage'
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   sw({
-    getSummary: () => {
-      console.log('received getSummary request')
+    getSummary: ({ config = {} }) => {
       const summary = {
-        weekly: weekly('9am', '5pm'),
-        daily: daily('9am', '5pm')
+        weekly: weekly(config.startTime || '9am', config.endTime || '5:30pm', config),
+        daily: daily(config.startTime || '9am', config.endTime || '5:30pm', config)
       }
 
-      set({ summary })
       sendResponse(summary)
+
+      set({ summary })
+
     },
 
-    unhighlight: () => {
-      console.log('received to unhighlight request')
-      unhighlight()
-    },
+    unhighlight: unhighlight,
+    highlightCategory: ({ color, day }) => highlight(color, day)
 
-    highlightCategory: ({ color, day }) => {
-      console.log('received highlight request for', color, day)
-      highlight(color, day)
-    }
   })(message.type, message)
 })

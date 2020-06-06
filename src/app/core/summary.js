@@ -13,11 +13,12 @@ var summary = (totalTime, res, config = {}) => {
 
   const result = Object.entries(sum)
     .filter(([key]) => key !== "null")
-    .filter(([,val]) => val > 0)
+    .filter(([, val]) => val > 0)
     .map(([key, val]) => [
       config[key] || key,
       key,
       Math.floor((val / totalTime) * 100),
+      { h: new Date(val).getHours() - 1, m: new Date(val).getMinutes() },
     ])
 
   const remaining = 100 - result.reduce((acc, [, , value]) => acc + value, 0)

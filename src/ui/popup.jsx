@@ -2,10 +2,12 @@ import * as React from "react"
 import * as ReactDOM from "react-dom"
 import { useState, useEffect } from "react"
 
+import Loader from "./loader"
 import { adjustCol } from "../app/utils/col"
 import { debounce } from "../app/utils/debounce"
 
 import { sendMessage } from "../app/utils/chrome-message"
+import { get } from "../app/utils/chrome-storage"
 
 import Tab from "@material-ui/core/Tab"
 import Tabs from "@material-ui/core/Tabs"
@@ -31,7 +33,7 @@ const TabPanel = ({ value, index, children }) => {
 const Leg = ({ data }) => (
   <div style={{ marginTop: "24px" }}>
     <Grid container spacing={3}>
-      {data.map(([label, color, value], i) => (
+      {data.map(([label, color, value, t], i) => (
         <Grid item xs={6} key={i}>
           <div className="legend">
             <div
@@ -39,7 +41,11 @@ const Leg = ({ data }) => (
               style={{ backgroundColor: color }}
             />
             <div className="legend__text">
-              {value}% - {label}
+              {!t
+                ? `${value}% - ${label}`
+                : t.h > 0
+                ? `${t.h}hr${t.m}m ${value}% - ${label}`
+                : `${t.m}m ${value}% - ${label}`}
             </div>
           </div>
         </Grid>
@@ -48,8 +54,8 @@ const Leg = ({ data }) => (
   </div>
 )
 
-const Chart = ({ data, day }) => {
-  const width = 266
+const Chart = ({ data, day, size }) => {
+  const width = 532 * size
   const height = 220
   const cy = height / 2
   const cx = width / 2
@@ -69,7 +75,7 @@ const Chart = ({ data, day }) => {
         <Pie
           className="chart"
           data={mapped}
-          outerRadius={radius - 20}
+          outerRadius={radius - 8}
           pieValue={({ value }) => value / 100}
           pieSortValues={(a, b) => a.value - b.value}
         >
@@ -118,7 +124,7 @@ const Chart = ({ data, day }) => {
   )
 }
 
-const Hello = () => {
+const Popup = () => {
   const classes = useStyles()
   const [loading, setLoading] = useState(false)
   const [summary, setSummary] = useState()
@@ -127,14 +133,16 @@ const Hello = () => {
 
   useEffect(() => {
     setLoading(true)
-    sendMessage({ type: "getSummary" }, (summary) => {
-      setSummary(summary)
-      setLoading(false)
+    get("config", ({ config } = {}) => {
+      sendMessage({ type: "getSummary", config }, (summary) => {
+        setSummary(summary)
+        setLoading(false)
+      })
     })
   }, [])
 
   if (loading || !summary) {
-    return <div className="container">loading...</div>
+    return <Loader />
   }
 
   return (
@@ -152,7 +160,7 @@ const Hello = () => {
             {summary.daily.map(({ day }, i) => (
               <Tab
                 key={i}
-                label={day.slice(0,3)}
+                label={day.slice(0, 3)}
                 classes={{ wrapper: classes.wrapper }}
               />
             ))}
@@ -169,10 +177,10 @@ const Hello = () => {
                   spacing={3}
                   container
                 >
-                  <Grid item xs={6}>
-                    <Chart data={summary} day={day} />
+                  <Grid item xs={4}>
+                    <Chart size={4 / 12} data={summary} day={day} />
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={8}>
                     {total && (
                       <span>
                         <b>{day}</b> - {total}
@@ -197,4 +205,4 @@ const Hello = () => {
 
 // --------------
 
-ReactDOM.render(<Hello />, document.getElementById("root"))
+ReactDOM.render(<Popup />, document.getElementById("root"))

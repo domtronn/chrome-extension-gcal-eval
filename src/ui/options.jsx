@@ -18,7 +18,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-
 const Fresh = () => (
   <p>
     You don't currently have any settings Please visit
@@ -31,17 +30,60 @@ const Settings = ({ summary, config = {} }) => {
   const classes = useStyles()
   const [cfg, setCfg] = useState(config)
 
-  console.log(config)
-  console.log(cfg)
+  const valid = (val) =>
+    val === "" ||
+    /^(1[0-2]|[1-9]|[1-9]:[0-5][0-9]|1[0-2]:[0-5][0-9])[ap]m$/.test(val)
+
+  const startTimeValid = valid(cfg.startTime)
+  const endTimeValid = valid(cfg.endTime)
 
   return (
     <>
-      <p>You have some settings!</p>
+      <h2>Working hours</h2>
+      <form noValidate autoComplete="off">
+        <Grid container spacing={3}>
+          <Grid item xs={4}>
+            <TextField
+              error={!startTimeValid}
+              onChange={(e) => {
+                valid(e.target.value) &&
+                  set({ config: { ...cfg, startTime: e.target.value } })
+                setCfg({ ...cfg, startTime: e.target.value })
+              }}
+              value={cfg.startTime || ""}
+              helperText={
+                !startTimeValid ? "Invalid time - 12hr format e.g. 9:30am" : ""
+              }
+              label={`Day start time`}
+              color="secondary"
+              variant="outlined"
+            />
+          </Grid>
+
+          <Grid item xs={4}>
+            <TextField
+              error={!endTimeValid}
+              onChange={(e) => {
+                valid(e.target.value) &&
+                  set({ config: { ...cfg, endTime: e.target.value } })
+                setCfg({ ...cfg, endTime: e.target.value })
+              }}
+              value={cfg.endTime || ""}
+              helperText={
+                !endTimeValid ? "Invalid time - 12hr format e.g. 6pm" : ""
+              }
+              label={`Day end time`}
+              color="secondary"
+              variant="outlined"
+            />
+          </Grid>
+        </Grid>
+      </form>
       <h2>Colors in your last GCal</h2>
       <form noValidate autoComplete="off">
         <Grid container spacing={3}>
-          {summary.weekly.map(([, col]) => (
-            <Grid item xs={4}>
+          {summary.weekly.map(([, col], i) => (
+            <Grid item xs={4} key={i}>
               <div className="config__item">
                 <div
                   className="config__preview"
@@ -55,14 +97,13 @@ const Settings = ({ summary, config = {} }) => {
                   }}
                   label={`label for ${col}`}
                   color="secondary"
-                  variant="outlined" />
+                  variant="outlined"
+                />
               </div>
             </Grid>
           ))}
         </Grid>
-        <div
-          style={{ marginTop: "16px" }}
-        >
+        <div style={{ marginTop: "16px" }}>
           <Button
             size="large"
             variant="outlined"
@@ -76,9 +117,7 @@ const Settings = ({ summary, config = {} }) => {
             Clear settings
           </Button>
         </div>
-
       </form>
-
     </>
   )
 }
@@ -107,7 +146,7 @@ const Options = () => {
       style={{
         maxWidth: "720px",
         margin: "36px auto",
-        padding: "36px"
+        padding: "36px",
       }}
     >
       <h1>GCal Eval</h1>
