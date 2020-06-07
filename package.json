@@ -10,6 +10,9 @@
   "author": "",
   "license": "BSD-3-Clause",
   "devDependencies": {
+    "@babel/core": "^7.10.2",
+    "@babel/preset-env": "^7.10.2",
+    "@babel/preset-react": "^7.10.1",
     "@types/chrome": "0.0.75",
     "@types/react": "^16.7.8",
     "@types/react-dom": "^16.0.11",
@@ -46,20 +49,16 @@
     "webpack-cli": "^3.1.2"
   },
   "dependencies": {
-    "@babel/core": "^7.10.2",
-    "@babel/preset-env": "^7.10.2",
-    "@babel/preset-react": "^7.10.1",
     "@material-ui/core": "^4.10.1",
     "@material-ui/icons": "^4.9.1",
     "@vx/event": "^0.0.197",
     "@vx/group": "^0.0.197",
+    "@vx/pattern": "^0.0.197",
     "@vx/shape": "^0.0.197",
     "@vx/tooltip": "^0.0.197",
-    "@welldone-software/why-did-you-render": "^4.2.5",
     "babel-loader": "^8.1.0",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
-    "react-minimal-pie-chart": "^8.0.1",
     "react-spinners": "^0.8.3"
   }
 }

@@ -3,6 +3,7 @@ import * as ReactDOM from "react-dom"
 import { useState, useEffect } from "react"
 
 import Loader from "./loader"
+import sw from "../app/utils/switch"
 import { adjustCol } from "../app/utils/col"
 import { debounce } from "../app/utils/debounce"
 
@@ -23,6 +24,7 @@ import { makeStyles } from "@material-ui/core/styles"
 import { Group } from "@vx/group"
 import { Pie } from "@vx/shape"
 import { localPoint } from "@vx/event"
+import { PatternWaves, PatternCircles, PatternLines } from "@vx/pattern"
 import { useTooltip, TooltipWithBounds } from "@vx/tooltip"
 
 const useStyles = makeStyles({
@@ -112,6 +114,8 @@ const Chart = ({ data, day, size }) => {
     args.type === "unhighlight" ? hideTooltip() : showTooltip(args.tooltip)
   }, 50)
 
+  const patternDarken = -30
+
   return (
     <>
       <svg className="chart" width={width} height={height}>
@@ -125,39 +129,86 @@ const Chart = ({ data, day, size }) => {
           >
             {(pie) =>
               pie.arcs.map((arc, i) => (
-                <g
-                  className={
-                    arc.data.color === "#fff" || arc.data.color === "#ffffff"
-                      ? "chart__segment chart__segment--white"
-                      : "chart__segment chart__segment--color"
-                  }
-                  key={`letters-${arc.data.label}-${i}`}
-                >
-                  <path
-                    onMouseOver={(evt, datum) => {
-                      if (
+                <>
+                  {sw({
+                    1: () => (
+                      <PatternWaves
+                        id={`pattern-${i}`}
+                        height={14}
+                        width={14}
+                        background={arc.data.color}
+                        strokeWidth={1}
+                        stroke={adjustCol(arc.data.color, patternDarken)}
+                      />
+                    ),
+                    2: () => (
+                      <PatternCircles
+                        id={`pattern-${i}`}
+                        radius={1}
+                        height={12}
+                        width={12}
+                        background={arc.data.color}
+                        strokeWidth={1}
+                        fill={adjustCol(arc.data.color, patternDarken)}
+                      />
+                    ),
+
+                    default: () => (
+                      <PatternLines
+                        id={`pattern-${i}`}
+                        height={10}
+                        width={10}
+                        background={arc.data.color}
+                        strokeWidth={1}
+                        stroke={adjustCol(arc.data.color, patternDarken)}
+                        orientation={["diagonal"]}
+                      />
+                    ),
+                  })(i % 3)}
+                  <g
+                    className={
+                      arc.data.color === "#fff" || arc.data.color === "#ffffff"
+                        ? "chart__segment chart__segment--white"
+                        : "chart__segment chart__segment--color"
+                    }
+                    key={`letters-${arc.data.label}-${i}`}
+                  >
+                    <path
+                      fill={
                         arc.data.color === "#fff" ||
                         arc.data.color === "#ffffff"
-                      )
-                        return
-                      const coords = localPoint(evt.target.ownerSVGElement, evt)
+                          ? arc.data.color
+                          : `url(#pattern-${i})`
+                      }
+                      onMouseOver={(evt, datum) => {
+                        if (
+                          arc.data.color === "#fff" ||
+                          arc.data.color === "#ffffff"
+                        )
+                          return
+                        const coords = localPoint(
+                          evt.target.ownerSVGElement,
+                          evt
+                        )
 
-                      sendHighlight({
-                        type: "highlightCategory",
-                        tooltip: {
-                          tooltipLeft: coords.x,
-                          tooltipTop: coords.y,
-                          tooltipData: arc.data,
-                        },
-                        ...arc.data,
-                        day,
-                      })
-                    }}
-                    onMouseLeave={() => sendHighlight({ type: "unhighlight" })}
-                    d={pie.path(arc)}
-                    fill={arc.data.color}
-                  />
-                </g>
+                        sendHighlight({
+                          type: "highlightCategory",
+                          tooltip: {
+                            tooltipLeft: coords.x,
+                            tooltipTop: coords.y,
+                            tooltipData: arc.data,
+                          },
+                          ...arc.data,
+                          day,
+                        })
+                      }}
+                      onMouseLeave={() =>
+                        sendHighlight({ type: "unhighlight" })
+                      }
+                      d={pie.path(arc)}
+                    />
+                  </g>
+                </>
               ))
             }
           </Pie>
@@ -193,9 +244,7 @@ const Popup = () => {
     })
   }, [])
 
-  if (loading || !summary) {
-    return <Loader />
-  }
+  if (loading || !summary) return <Loader />
 
   return (
     <div className="container">

@@ -16,7 +16,7 @@ export const adjustCol = (col, amt) => {
     usePound = true
   }
 
-  var num = parseInt(col, 16)
+  var num = parseInt(col, 16) || 0
 
   var r = (num >> 16) + amt
 

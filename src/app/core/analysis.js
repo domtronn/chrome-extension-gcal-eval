@@ -17,11 +17,12 @@ export const getMeetingsForDays = ({ dayStart, dayEnd }) =>
 export const getMeetings = (el = document, { dayStart, dayEnd }) =>
   selectMeetings(el)
     .map((node) => {
-      var [time, name, , status] = node.innerText.split(", ")
+      var [time, name, calendar, status] = node.innerText.split(", ")
       var [start, end] = time.split(" to ")
 
       return {
         id: rgbToHex(node.style["background-color"].substring()),
+        calendar,
         name,
         status,
         time: {

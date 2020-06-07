@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
-import GridLoader from "react-spinners/GridLoader"
+import Loader from "react-spinners/GridLoader"
 
-import red from "@material-ui/core/colors/red"
+import blue from "@material-ui/core/colors/blue"
 
 const TIMEOUT = 100
 
@@ -16,8 +16,8 @@ export default () => {
   if (!show) return null
 
   return (
-    <div style={{ margin: "24px auto", width: "100%" }}>
-      <GridLoader size={32} color={red[500]} loading />
+    <div className="loader loader__container">
+      <Loader size={22} color={blue[500]} loading />
     </div>
   )
 }

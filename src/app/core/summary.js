@@ -25,6 +25,9 @@ var summary = (totalTime, res, config = {}) => {
     ])
 
   const remaining = 100 - result.reduce((acc, [, , value]) => acc + value, 0)
+  const calendars = [
+    ...new Set(Object.entries(res).reduce((acc, it) => [...acc, it.calendar])),
+  ]
 
   return [
     [
@@ -56,7 +59,7 @@ export const daily = (dayStart, dayEnd, config) => {
 
 export const weekly = (dayStart, dayEnd, config) => {
   const totalEvents = getMeetingsForDays({ dayStart, dayEnd }).reduce(
-    (acc, { total }) => acc + parseInt(total),
+    (acc, { total }) => acc + (parseInt(total) || 0),
     0
   )
 

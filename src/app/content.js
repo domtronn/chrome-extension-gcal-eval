@@ -6,7 +6,7 @@ import { set, get } from "./utils/chrome-storage"
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   sw({
-    getSummary: ({ config }) => {
+    getSummary: ({ config = {} }) => {
       const summary = {
         weekly: weekly(
           config.startTime || "9am",
