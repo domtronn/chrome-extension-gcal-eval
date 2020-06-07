@@ -44,48 +44,68 @@ const TabPanel = ({ value, index, children }) => {
   return children
 }
 
-const Leg = ({ data }) => (
-  <div style={{ marginTop: "24px" }}>
-    <Grid container spacing={3}>
-      {data.map(([label, color, value, t], i) => (
-        <Grid item xs={4} key={i}>
-          <div className="legend">
-            <div
-              className="legend__square"
-              style={{ backgroundColor: color }}
-            />
-            <div className="legend__text">
-              <span
-                style={{
-                  fontSize: 16,
-                }}
-              >
-                {label}
-              </span>
-              <div style={{ paddingTop: 8 }}>
-                <span>
-                  <b style={{ fontSize: 16 }}>{value}</b>%
-                  <span style={{ marginLeft: 8 }}>
-                    {t && t.h > 0 && (
-                      <span>
-                        <span style={{ fontSize: 16 }}>{t.h}</span>hr
-                      </span>
-                    )}
-                    {t && t.m > 0 && (
-                      <span>
-                        <span style={{ fontSize: 16 }}>{t.m}</span>m
-                      </span>
-                    )}
-                  </span>
+const Leg = ({ data, day }) => {
+  const sendHighlight = debounce((args) => {
+    sendMessage(args)
+  }, 50)
+
+  return (
+    <div style={{ marginTop: "24px" }}>
+      <Grid container spacing={3}>
+        {data.map(([label, color, value, t], i) => (
+          <Grid
+            item
+            xs={4}
+            key={i}
+            onMouseLeave={() => sendHighlight({ type: "unhighlight" })}
+            onMouseOver={() => {
+              if (color === "#fff" || color === "#ffffff") return
+
+              sendHighlight({
+                type: "highlightCategory",
+                color,
+                day,
+              })
+            }}
+          >
+            <div className="legend">
+              <div
+                className="legend__square"
+                style={{ backgroundColor: color }}
+              />
+              <div className="legend__text">
+                <span
+                  style={{
+                    fontSize: 16,
+                  }}
+                >
+                  {label}
                 </span>
+                <div style={{ paddingTop: 8 }}>
+                  <span>
+                    <b style={{ fontSize: 16 }}>{value}</b>%
+                    <span style={{ marginLeft: 8 }}>
+                      {t && t.h > 0 && (
+                        <span>
+                          <span style={{ fontSize: 16 }}>{t.h}</span>hr
+                        </span>
+                      )}
+                      {t && t.m > 0 && (
+                        <span>
+                          <span style={{ fontSize: 16 }}>{t.m}</span>m
+                        </span>
+                      )}
+                    </span>
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
-        </Grid>
-      ))}
-    </Grid>
-  </div>
-)
+          </Grid>
+        ))}
+      </Grid>
+    </div>
+  )
+}
 
 const Chart = ({ data, day, size }) => {
   const width = 664 * size
@@ -114,7 +134,7 @@ const Chart = ({ data, day, size }) => {
     args.type === "unhighlight" ? hideTooltip() : showTooltip(args.tooltip)
   }, 50)
 
-  const patternDarken = -30
+  const patternDarken = -60
 
   return (
     <>
@@ -129,7 +149,7 @@ const Chart = ({ data, day, size }) => {
           >
             {(pie) =>
               pie.arcs.map((arc, i) => (
-                <>
+                <React.Fragment key={i}>
                   {sw({
                     1: () => (
                       <PatternWaves
@@ -186,6 +206,7 @@ const Chart = ({ data, day, size }) => {
                           arc.data.color === "#ffffff"
                         )
                           return
+
                         const coords = localPoint(
                           evt.target.ownerSVGElement,
                           evt
@@ -208,7 +229,7 @@ const Chart = ({ data, day, size }) => {
                       d={pie.path(arc)}
                     />
                   </g>
-                </>
+                </React.Fragment>
               ))
             }
           </Pie>
@@ -285,7 +306,7 @@ const Popup = () => {
               <Grid item xs={8}>
                 <h2>{total}</h2>
                 <Divider style={{ margin: "16px 0" }} />
-                <Leg data={summary} />
+                <Leg data={summary} day={day} />
               </Grid>
             </TabPanel>
           ))}

@@ -1,9 +1,9 @@
 import { rgbToHex } from "../utils/col"
-import { selectDays, selectMeetings } from "../utils/selectors"
+import { selectDays, selectAllMeetings } from "../utils/selectors"
 
 export const highlight = (color, day) => {
   selectDays().forEach((column) => {
-    selectMeetings(column).forEach((node) => {
+    selectAllMeetings(column).forEach((node) => {
       if (
         (day === "Weekly" || column.innerText.includes(day)) &&
         rgbToHex(node.style["background-color"]) === color
@@ -17,4 +17,4 @@ export const highlight = (color, day) => {
 }
 
 export const unhighlight = () =>
-  selectMeetings().forEach((node) => (node.style.opacity = 1))
+  selectAllMeetings().forEach((node) => (node.style.opacity = 1))
