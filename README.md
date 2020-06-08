@@ -1,17 +1,18 @@
 <h2 align="center">GCal Eval</h2>
 <p align="center">
-  <i>A Chrome plugin to analyse your work week at a glance</i>
   <img
     alt="logo"
     src="dist/icons/icon128.png"
   />
+  <br />
+  <i>A Chrome plugin to analyse your work week at a glance</i>
 </p>
 
 ## Overview
 
 <img
     alt="demo"
-    src="doc.png"
+    src="preview.png"
 />
 
 This plugin uses the _colours_ of your diary to analyse the time spent on different things.
