@@ -3,7 +3,7 @@
   <i>A Chrome plugin to analyse your work week at a glance</i>
   <img
     alt="logo"
-    src="dist/icons/icons128.png"
+    src="dist/icons/icon128.png"
   />
 </p>
 
