@@ -4,7 +4,6 @@ import { useState, useEffect } from "react"
 
 import Loader from "./loader"
 import sw from "../app/utils/switch"
-import { adjustCol } from "../app/utils/col"
 import { debounce } from "../app/utils/debounce"
 
 import { sendMessage } from "../app/utils/chrome-message"
@@ -18,6 +17,8 @@ import Tabs from "@material-ui/core/Tabs"
 import AppBar from "@material-ui/core/AppBar"
 import Divider from "@material-ui/core/Divider"
 import Grid from "@material-ui/core/Grid"
+
+import { LightenDarkenColor } from "lighten-darken-color"
 
 import { makeStyles } from "@material-ui/core/styles"
 
@@ -133,7 +134,7 @@ const Chart = ({ data, day, size }) => {
     args.type === "unhighlight" ? hideTooltip() : showTooltip(args.tooltip)
   }, 50)
 
-  const patternDarken = -60
+  const patternDarken = -50
 
   return (
     <>
@@ -157,7 +158,10 @@ const Chart = ({ data, day, size }) => {
                         width={14}
                         background={arc.data.color}
                         strokeWidth={1}
-                        stroke={adjustCol(arc.data.color, patternDarken)}
+                        stroke={LightenDarkenColor(
+                          arc.data.color,
+                          patternDarken
+                        )}
                       />
                     ),
                     2: () => (
@@ -168,7 +172,7 @@ const Chart = ({ data, day, size }) => {
                         width={12}
                         background={arc.data.color}
                         strokeWidth={1}
-                        fill={adjustCol(arc.data.color, patternDarken)}
+                        fill={LightenDarkenColor(arc.data.color, patternDarken)}
                       />
                     ),
 
@@ -179,7 +183,10 @@ const Chart = ({ data, day, size }) => {
                         width={10}
                         background={arc.data.color}
                         strokeWidth={1}
-                        stroke={adjustCol(arc.data.color, patternDarken)}
+                        stroke={LightenDarkenColor(
+                          arc.data.color,
+                          patternDarken
+                        )}
                         orientation={["diagonal"]}
                       />
                     ),
