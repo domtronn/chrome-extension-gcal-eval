@@ -25,9 +25,6 @@ var summary = (totalTime, res, config = {}) => {
     ])
 
   const remaining = 100 - result.reduce((acc, [, , value]) => acc + value, 0)
-  const calendars = [
-    ...new Set(Object.entries(res).reduce((acc, it) => [...acc, it.calendar])),
-  ]
 
   return [
     [
