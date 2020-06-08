@@ -14,5 +14,5 @@ export const selectMeetings = (el = document) =>
 
 export const selectAllMeetings = (el = document) =>
   [...el.querySelectorAll('div[data-opens-details="true"]')].filter((i) =>
-    /([0-9]{1,2}:[0-9]{2}|[0-9]{1,2})[ap]m to /.test(i.innerText)
+    /([0-9]{1,2}:[0-9]{2}|[0-9]{1,2})([ap]m|) to /.test(i.innerText)
   )
