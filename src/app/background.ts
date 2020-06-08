@@ -1,6 +1,7 @@
 import sw from './utils/switch'
+import api from './utils/api'
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+api.runtime.onMessage.addListener((message, sender, sendResponse) => {
   const data = {
     summary: {}
   }

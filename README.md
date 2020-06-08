@@ -29,7 +29,6 @@ At a glance, see how many interviews you're in, how many 1-1s you have and how m
 
 ## Next steps
 
-[ ] Firefox support
-[ ] Deal with clashing meetings
-[ ] Publish on web stores
-[ ] Highlight your work day
+- [ ] Deal with clashing meetings
+- [ ] Publish on web stores
+- [ ] Highlight your work day

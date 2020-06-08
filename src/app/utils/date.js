@@ -7,8 +7,6 @@ export const twelveHourToDate = (s) => {
   date.setSeconds(0)
   date.setMinutes(+min)
 
-  console.log("hr", +hr)
-
   !ampm
     ? date.setHours(+hr)
     : +hr === 12

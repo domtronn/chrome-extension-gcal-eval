@@ -1,10 +1,11 @@
 import sw from "./utils/switch"
+import api from "./utils/api"
 import { weekly, daily } from "./core/summary"
 import { highlight, unhighlight } from "./core/modifications"
 
 import { set, get } from "./utils/chrome-storage"
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+api.runtime.onMessage.addListener((message, sender, sendResponse) => {
   sw({
     getSummary: ({ config = {} }) => {
       const summary = {

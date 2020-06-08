@@ -8,26 +8,22 @@ import { isEmpty } from "../app/utils/obj"
 import TextField from "@material-ui/core/TextField"
 import Button from "@material-ui/core/Button"
 import Grid from "@material-ui/core/Grid"
+import T from "@material-ui/core/Typography"
 
 import Paper from "@material-ui/core/Paper"
+import DeleteIcon from "@material-ui/icons/Delete"
 
-import { makeStyles } from "@material-ui/core/styles"
-const useStyles = makeStyles((theme) => ({
-  button: {
-    margin: "0 8px",
-  },
-}))
+import Loader from "./loader"
 
 const Fresh = () => (
-  <p>
+  <T variant="body2">
     You don't currently have any settings Please visit
     <a href="https://calendar.google.com/calendar/r">your calendar</a>
     and run the plugin to read your options
-  </p>
+  </T>
 )
 
 const Settings = ({ summary, config = {} }) => {
-  const classes = useStyles()
   const [cfg, setCfg] = useState(config)
 
   const valid = (val) =>
@@ -39,9 +35,11 @@ const Settings = ({ summary, config = {} }) => {
 
   return (
     <>
-      <h2>Working hours</h2>
+      <T variant="h5" gutterBottom>
+        Working hours
+      </T>
       <form noValidate autoComplete="off">
-        <Grid container spacing={3}>
+        <Grid container spacing={3} style={{ marginBottom: 8 }}>
           <Grid item xs={4}>
             <TextField
               error={!startTimeValid}
@@ -79,7 +77,9 @@ const Settings = ({ summary, config = {} }) => {
           </Grid>
         </Grid>
       </form>
-      <h2>Colors in your last GCal</h2>
+      <T gutterBottom variant="h5">
+        Colors in your last GCal
+      </T>
       <form noValidate autoComplete="off">
         <Grid container spacing={3}>
           {summary.weekly.summary.map(([, col], i) => (
@@ -103,12 +103,18 @@ const Settings = ({ summary, config = {} }) => {
             </Grid>
           ))}
         </Grid>
-        <div style={{ marginTop: "16px" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            marginTop: "16px",
+          }}
+        >
           <Button
             size="large"
+            startIcon={<DeleteIcon />}
             variant="outlined"
             color="secondary"
-            className={classes.button}
             onClick={() => {
               clear("config")
               setCfg({})
@@ -138,7 +144,7 @@ const Options = () => {
     })
   }, [])
 
-  if (loading) return <div>loading...</div>
+  if (loading) return <Loader />
 
   return (
     <Paper
@@ -149,7 +155,9 @@ const Options = () => {
         padding: "36px",
       }}
     >
-      <h1>GCal Eval</h1>
+      <T gutterBottom variant="h3">
+        GCal Eval
+      </T>
       {isEmpty(summary) ? <Fresh /> : <Settings {...summary} {...config} />}
     </Paper>
   )

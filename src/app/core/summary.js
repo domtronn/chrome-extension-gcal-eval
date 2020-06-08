@@ -13,10 +13,7 @@ var summary = (totalTime, res, config = {}) => {
 
   const result = Object.entries(sum)
     .filter(([key]) => key !== "null")
-    .filter(([key, val]) => {
-      console.log(key, val)
-      return val > 0
-    })
+    .filter(([key, val]) => val > 0)
     .map(([key, val]) => [
       config[key] || key,
       key,

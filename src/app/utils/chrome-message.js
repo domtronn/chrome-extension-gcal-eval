@@ -1,6 +1,7 @@
-/* global chrome */
+import api from "./api"
+
 export const sendMessage = (msg, f) => {
-  chrome.tabs.query({ active: true, currentWindow: true }, ([tabs]) => {
-    chrome.tabs.sendMessage(tabs.id, msg, f)
+  api.tabs.query({ active: true, currentWindow: true }, ([tabs]) => {
+    api.tabs.sendMessage(tabs.id, msg, f)
   })
 }

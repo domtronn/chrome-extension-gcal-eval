@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 
 import Loader from "./loader"
 import sw from "../app/utils/switch"
+import api from "../app/utils/api"
 import { debounce } from "../app/utils/debounce"
 
 import { sendMessage } from "../app/utils/chrome-message"
@@ -17,6 +18,7 @@ import Tabs from "@material-ui/core/Tabs"
 import AppBar from "@material-ui/core/AppBar"
 import Divider from "@material-ui/core/Divider"
 import Grid from "@material-ui/core/Grid"
+import T from "@material-ui/core/Typography"
 
 import { LightenDarkenColor } from "lighten-darken-color"
 
@@ -74,15 +76,16 @@ const Leg = ({ data, day }) => {
                 style={{ backgroundColor: color }}
               />
               <div className="legend__text">
-                <span
+                <T
+                  variant="body2"
                   style={{
                     fontSize: 16,
                   }}
                 >
                   {label}
-                </span>
+                </T>
                 <div style={{ paddingTop: 8 }}>
-                  <span>
+                  <T variant="body2">
                     <b style={{ fontSize: 16 }}>{value}</b>%
                     <span style={{ marginLeft: 8 }}>
                       {t && t.h > 0 && (
@@ -96,7 +99,7 @@ const Leg = ({ data, day }) => {
                         </span>
                       )}
                     </span>
-                  </span>
+                  </T>
                 </div>
               </div>
             </div>
@@ -247,7 +250,9 @@ const Chart = ({ data, day, size }) => {
           top={tooltipTop}
           left={tooltipLeft}
         >
-          {tooltipData.label} - <strong>{tooltipData.value}%</strong>
+          <T variant="caption">
+            {tooltipData.label} - <strong>{tooltipData.value}%</strong>
+          </T>
         </TooltipWithBounds>
       )}
     </>
@@ -292,7 +297,7 @@ const Popup = () => {
           ))}
         </Tabs>
         <Fab
-          onClick={() => chrome.tabs.create({ url: "/options.html" })}
+          onClick={() => api.tabs.create({ url: "/options.html" })}
           color="secondary"
           className={classes.fab}
           size="small"
@@ -310,7 +315,7 @@ const Popup = () => {
                 <Chart size={4 / 12} data={summary} day={day} />
               </Grid>
               <Grid item xs={8}>
-                <h2>{total}</h2>
+                <T variant="h5">{total}</T>
                 <Divider style={{ margin: "16px 0" }} />
                 <Leg data={summary} day={day} />
               </Grid>

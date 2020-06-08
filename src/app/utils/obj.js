@@ -1,1 +1,1 @@
-export const isEmpty = o => Object.entries(o).length === 0
+export const isEmpty = (o = {}) => Object.entries(o).length === 0
