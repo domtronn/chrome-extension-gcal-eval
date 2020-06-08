@@ -60,7 +60,6 @@ const Leg = ({ data, day }) => {
             onMouseLeave={() => sendHighlight({ type: "unhighlight" })}
             onMouseOver={() => {
               if (color === "#fff" || color === "#ffffff") return
-
               sendHighlight({
                 type: "highlightCategory",
                 color,
