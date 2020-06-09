@@ -1,3 +1,5 @@
 .DS_Store
 dist/js/*
+chrome
+firefox
 node_modules/

@@ -2,7 +2,7 @@
   "name": "GCal Eval",
   "version": "0.0.1",
   "manifest_version": 2,
-  "description": "Chrome extension to analyse your google calendar colour coding",
+  "description": "Browser extension to analyse your google calendar colour coding",
   "applications": {
     "gecko": {
       "id": "dgc336@gmail.com",
@@ -26,10 +26,9 @@
     "persistent": true
   },
   "permissions": [
-    "storage", 
-    "https://calendar.google.com/calendar/*",
-    "http://fonts.googleapis.com/",
-    "https://fonts.googleapis.com/"
+    "tabs",
+    "storage",
+    "https://calendar.google.com/calendar/*"
   ],
   "content_security_policy": "default-src 'self'; style-src-elem 'unsafe-inline'; style-src 'unsafe-inline';",
   "content_scripts": [
@@ -43,4 +42,3 @@
     }
   ]
 }
-
