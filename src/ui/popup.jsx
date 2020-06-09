@@ -7,16 +7,18 @@ import sw from "../app/utils/switch"
 import api from "../app/utils/api"
 import { debounce } from "../app/utils/debounce"
 
-import { sendMessage } from "../app/utils/chrome-message"
+import { sendMessage, currentTab } from "../app/utils/chrome-message"
 import { get } from "../app/utils/chrome-storage"
 
 import Fab from "@material-ui/core/Fab"
 import BuildIcon from "@material-ui/icons/Build"
+import CalendarIcon from "@material-ui/icons/Today"
 
 import Tab from "@material-ui/core/Tab"
 import Tabs from "@material-ui/core/Tabs"
 import AppBar from "@material-ui/core/AppBar"
 import Divider from "@material-ui/core/Divider"
+import Button from "@material-ui/core/Button"
 import Grid from "@material-ui/core/Grid"
 import T from "@material-ui/core/Typography"
 
@@ -106,6 +108,32 @@ const Leg = ({ data, day }) => {
           </Grid>
         ))}
       </Grid>
+    </div>
+  )
+}
+
+const InvalidPage = () => {
+  return (
+    <div
+      style={{
+        textAlign: "center",
+        paddingTop: 48,
+      }}
+    >
+      <T variant="h5">Sorry,</T>
+      <T variant="body1">
+        This extension only works in Google calendar <br />
+        Please visit your calendar and try again
+      </T>
+      <Button
+        style={{ marginTop: 18 }}
+        startIcon={<CalendarIcon />}
+        variant="contained"
+        color="secondary"
+        onClick={() => api.tabs.create({ url: "https://calendar.google.com/" })}
+      >
+        Your calendar
+      </Button>
     </div>
   )
 }
@@ -264,7 +292,15 @@ const Popup = () => {
   const [loading, setLoading] = useState(false)
   const [summary, setSummary] = useState()
 
+  const [location, setLocation] = useState()
+
   const [tab, setTab] = useState(0)
+
+  useEffect(() => {
+    currentTab((tab) => {
+      setLocation(tab.url)
+    })
+  })
 
   useEffect(() => {
     setLoading(true)
@@ -276,6 +312,9 @@ const Popup = () => {
     })
   }, [])
 
+  const validPage = /calendar\.google\.com/.test(location)
+
+  if (location && !validPage) return <InvalidPage />
   if (loading || !summary) return <Loader />
 
   return (

@@ -34,5 +34,5 @@ module.exports = {
     ],
   },
 
-  watch: true,
+  watch: !!process.env.WATCH,
 }
