@@ -2,4 +2,6 @@
 dist/js/*
 chrome
 firefox
+!chrome/gcal_eval-0.0.1.zip
+!firefox/gcal_eval-0.0.1.zip
 node_modules/

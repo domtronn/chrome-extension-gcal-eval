@@ -22,10 +22,17 @@ At a glance, see how many interviews you're in, how many 1-1s you have and how m
 
 ## Installation
 
+### Chrome
+
 1. Download this project
 2. Go to <kbd>chrome://extensions</kbd> in a web browser
-3. Click <kbd>Load unpacked</kbd>
-4. Select the <kbd>dist</kbd> folder inside the download
+4. Drag the <kbd>gcal_eval-0.0.1.zip</kbd> file in the <kbd>chrome</kbd> folder into the page
+
+### Firefox
+
+1. Download this project
+2. Go to <kbd>about:addons</kbd> in a web browser
+4. Drag the <kbd>gcal_eval-0.0.1.zip</kbd> file in the <kbd>chrome</kbd> folder into the page
 
 ## Next steps
 
