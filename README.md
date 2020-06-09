@@ -24,14 +24,18 @@ At a glance, see how many interviews you're in, how many 1-1s you have and how m
 
 ### Chrome
 
-1. Download this project
+1. Download the [chrome plugin](/chrome/gcal_eval-0.0.1.zip)
 2. Go to <kbd>chrome://extensions</kbd> in a web browser
-4. Drag the <kbd>gcal_eval-0.0.1.zip</kbd> file in the <kbd>chrome</kbd> folder into the page
+3. Ensure <kbd>Develop mode</kbd> is enabled
+5. Drag the [<kbd>gcal_eval-0.0.1.zip</kbd>](/chrome/gcal_eval-0.0.1.zip) file into the page
 
 ### Firefox
 
+> WIP!
+
 1. Download this project
 2. Go to <kbd>about:addons</kbd> in a web browser
+3. 
 4. Drag the <kbd>gcal_eval-0.0.1.zip</kbd> file in the <kbd>chrome</kbd> folder into the page
 
 ## Next steps
