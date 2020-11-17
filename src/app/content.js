@@ -26,6 +26,11 @@ api.runtime.onMessage.addListener((message, sender, sendResponse) => {
       set({ summary })
     },
 
+    clickEl: ({ selector }) => {
+      const el = document.querySelector(selector)
+      if (el) el.click()
+    },
+
     unhighlight: () => unhighlight(),
     highlightCategory: ({ color, day }) => highlight(color, day),
   })(message.type, message)

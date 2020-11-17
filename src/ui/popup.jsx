@@ -12,6 +12,8 @@ import { get } from "../app/utils/chrome-storage"
 
 import Fab from "@material-ui/core/Fab"
 import BuildIcon from "@material-ui/icons/Build"
+import ChevronLeft from "@material-ui/icons/ChevronLeft"
+import ChevronRight from "@material-ui/icons/ChevronRight"
 import CalendarIcon from "@material-ui/icons/Today"
 
 import Tab from "@material-ui/core/Tab"
@@ -335,14 +337,63 @@ const Popup = () => {
             />
           ))}
         </Tabs>
-        <Fab
-          onClick={() => api.tabs.create({ url: "/options.html" })}
-          color="secondary"
-          className={classes.fab}
-          size="small"
-        >
-          <BuildIcon />
-        </Fab>
+        <div className={classes.fab}>
+          <Fab
+            onClick={() => {
+              sendMessage(
+                {
+                  type: "clickEl",
+                  selector: 'div[aria-label="Previous week"]',
+                },
+                () => {
+                  setLoading(true)
+                  setTimeout(() => {
+                    get("config", ({ config } = {}) => {
+                      sendMessage({ type: "getSummary", config }, (summary) => {
+                        setSummary(summary)
+                        setLoading(false)
+                      })
+                    })
+                  }, 500)
+                }
+              )
+            }}
+            size="small"
+          >
+            <ChevronLeft />
+          </Fab>
+          <Fab
+            onClick={() =>
+              sendMessage(
+                {
+                  type: "clickEl",
+                  selector: 'div[aria-label="Next week"]',
+                },
+                () => {
+                  setLoading(true)
+                  setTimeout(() => {
+                    get("config", ({ config } = {}) => {
+                      sendMessage({ type: "getSummary", config }, (summary) => {
+                        setSummary(summary)
+                        setLoading(false)
+                      })
+                    })
+                  }, 500)
+                }
+              )
+            }
+            size="small"
+          >
+            <ChevronRight />
+          </Fab>
+          <Fab
+            onClick={() => api.tabs.create({ url: "/options.html" })}
+            color="secondary"
+            size="medium"
+          >
+            <BuildIcon />
+          </Fab>
+        </div>
       </AppBar>
 
       <Grid style={{ padding: "70px 20px 20px" }} container spacing={3}>

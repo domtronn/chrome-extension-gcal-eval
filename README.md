@@ -43,3 +43,4 @@ At a glance, see how many interviews you're in, how many 1-1s you have and how m
 - [ ] Deal with clashing meetings
 - [ ] Publish on web stores
 - [ ] Highlight your work day
+- [ ] Ability to filter certain colours

@@ -63,7 +63,7 @@ export const weekly = (dayStart, dayEnd, config) => {
   const res = getMeetings(document, { dayStart, dayEnd })
 
   return {
-    day: "Weekly",
+    day: "All days",
     total: `${totalEvents} events`,
     summary: summary(totalTime, res, config),
   }
