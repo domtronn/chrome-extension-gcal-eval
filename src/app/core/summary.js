@@ -1,8 +1,14 @@
-import { twelveHourToDate } from "../utils/date"
+import {
+  twelveHourToDate,
+  calcHours,
+  calcMins,
+  closestFiveMins,
+} from "../utils/date"
 import { getDays } from "../utils/selectors"
 import { getMeetings, getMeetingsForDays } from "./analysis"
 
 const summary = (totalTime, res, config = {}) => {
+  console.log(res)
   const filteredRes = res.filter(
     ({ id, time }) => id !== null && time.end - time.start > 0
   )
@@ -15,28 +21,36 @@ const summary = (totalTime, res, config = {}) => {
     {}
   )
 
-  const result = Object.entries(sum).map(([key, val]) => ({
-    name: config[key] || key,
-    color: key,
-    usage: Math.ceil((val / totalTime) * 100),
-    time: { h: new Date(val).getHours() - 1, m: new Date(val).getMinutes() },
-  }))
+  const result = Object.entries(sum).map(([key, val]) => {
+    const h = calcHours(val)
+    const m = calcMins(val)
+    const [cH, cM] = closestFiveMins(h, m)
 
-  const toMinutes = (i) => i / 100000
-  const fromMinutes = (i) => i * 100000
-  const minutesUsed = filteredRes.reduce((acc, { time }) => {
-    const timeDiff = Math.max(toMinutes(time.end - time.start), 0)
+    return {
+      name: config[key] || key,
+      color: key,
+      usage: Math.ceil((val / totalTime) * 100),
+      time: { h, cH, m, cM },
+    }
+  })
+
+  const toSeconds = (i) => i / 1000
+  const fromSeconds = (i) => i * 1000
+
+  const secondsUsed = filteredRes.reduce((acc, { time }) => {
+    const timeDiff = Math.max(toSeconds(time.end - time.start), 0)
     const minsArr = Array(timeDiff)
       .fill()
-      .map((_, i) => toMinutes(time.start) + i)
+      .map((_, i) => toSeconds(time.start) + i)
 
     return new Set([...acc, ...minsArr])
   }, []).size
 
-  const remaining = (1 - fromMinutes(minutesUsed) / totalTime) * 100
-  const roundedTime = fromMinutes(
-    5 * Math.ceil(toMinutes((remaining / 100) * totalTime) / 5)
-  )
+  const remaining = (1 - fromSeconds(secondsUsed) / totalTime) * 100
+
+  const h = calcHours(totalTime * (remaining / 100))
+  const m = calcMins(totalTime * (remaining / 100))
+  const [cH, cM] = closestFiveMins(h, m)
 
   return [
     {
@@ -44,8 +58,10 @@ const summary = (totalTime, res, config = {}) => {
       color: "#ffffff",
       usage: remaining,
       time: {
-        h: new Date((remaining / 100) * totalTime).getHours() - 1,
-        m: new Date((remaining / 100) * totalTime).getMinutes(),
+        h,
+        m,
+        cH,
+        cM,
       },
     },
     ...result,

@@ -92,14 +92,14 @@ const Leg = ({ data, day }) => {
                   <T variant="body2">
                     <b style={{ fontSize: 16 }}>{Math.round(usage)}</b>%
                     <span style={{ marginLeft: 8 }}>
-                      {time && time.h > 0 && (
+                      {time && time.cH > 0 && (
                         <span>
-                          <span style={{ fontSize: 16 }}>{time.h}</span>hr
+                          <span style={{ fontSize: 16 }}>{time.cH}</span>hr
                         </span>
                       )}
-                      {time && time.m > 0 && (
+                      {time && time.cM > 0 && (
                         <span>
-                          <span style={{ fontSize: 16 }}>{time.m}</span>m
+                          <span style={{ fontSize: 16 }}>{time.cM}</span>m
                         </span>
                       )}
                     </span>

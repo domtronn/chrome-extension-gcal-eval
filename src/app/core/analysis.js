@@ -17,7 +17,10 @@ export const getMeetingsForDays = ({ dayStart, dayEnd }) =>
 export const getMeetings = (el = document, { dayStart, dayEnd }) =>
   selectMeetings(el)
     .map((node) => {
-      var [time, name, calendar, status] = node.innerText.split(", ")
+      var [time, name, calendar, status, _, day] = node.innerText
+        .replace(/\n/g, ", ")
+        .split(", ")
+
       var [start, end] = time.split(" to ")
 
       return {
@@ -26,8 +29,14 @@ export const getMeetings = (el = document, { dayStart, dayEnd }) =>
         name,
         status,
         time: {
-          start: Math.max(twelveHourToDate(dayStart), twelveHourToDate(start)),
-          end: Math.min(twelveHourToDate(dayEnd), twelveHourToDate(end)),
+          start: Math.max(
+            twelveHourToDate(dayStart, day),
+            twelveHourToDate(start, day)
+          ),
+          end: Math.min(
+            twelveHourToDate(dayEnd, day),
+            twelveHourToDate(end, day)
+          ),
         },
       }
     })
