@@ -47,6 +47,7 @@
     "typescript": "^3.1.6",
     "web-ext": "^4.2.0",
     "webpack": "^4.26.1",
+    "webpack-build-notifier": "^2.1.1-alpha",
     "webpack-cli": "^3.1.2"
   },
   "dependencies": {

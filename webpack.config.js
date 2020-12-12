@@ -1,5 +1,7 @@
 const path = require("path")
 
+const BuildNotifierPlugin = require("webpack-build-notifier")
+
 module.exports = {
   mode: "development",
   devtool: "inline-source-map",
@@ -19,6 +21,12 @@ module.exports = {
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".jsx"],
   },
+
+  plugins: [
+    new BuildNotifierPlugin({
+      title: "Google Calendar evaluator built",
+    }),
+  ],
 
   module: {
     rules: [

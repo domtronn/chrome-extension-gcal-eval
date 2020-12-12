@@ -6,7 +6,6 @@ function Extension() {
   const Api = {}
 
   apis.forEach((api) => {
-    console.log(Api, api)
     Api[api] = null
 
     try {

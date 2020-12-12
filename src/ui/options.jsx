@@ -82,20 +82,20 @@ const Settings = ({ summary, config = {} }) => {
       </T>
       <form noValidate autoComplete="off">
         <Grid container spacing={3}>
-          {summary.weekly.summary.map(([, col], i) => (
+          {summary.weekly.summary.map(({ color }, i) => (
             <Grid item xs={4} key={i}>
               <div className="config__item">
                 <div
                   className="config__preview"
-                  style={{ backgroundColor: col }}
+                  style={{ backgroundColoror: color }}
                 />
                 <TextField
-                  value={cfg[col] || ""}
+                  value={cfg[color] || ""}
                   onChange={(e) => {
-                    set({ config: { ...cfg, [col]: e.target.value } })
-                    setCfg({ ...cfg, [col]: e.target.value })
+                    set({ config: { ...cfg, [color]: e.target.value } })
+                    setCfg({ ...cfg, [color]: e.target.value })
                   }}
-                  label={`label for ${col}`}
+                  label={`label for ${color}`}
                   color="secondary"
                   variant="outlined"
                 />

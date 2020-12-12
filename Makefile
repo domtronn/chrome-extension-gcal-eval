@@ -4,6 +4,9 @@ clean:
 build:
 	./node_modules/.bin/webpack
 
+watch:
+	./node_modules/.bin/webpack --watch
+
 .PHONY: firefox chrome
 
 firefox:

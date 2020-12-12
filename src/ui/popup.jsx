@@ -59,7 +59,7 @@ const Leg = ({ data, day }) => {
   return (
     <div style={{ marginTop: "24px" }}>
       <Grid container spacing={3}>
-        {data.map(([label, color, value, t], i) => (
+        {data.map(({ name, color, usage, time }, i) => (
           <Grid
             item
             xs={4}
@@ -86,20 +86,20 @@ const Leg = ({ data, day }) => {
                     fontSize: 16,
                   }}
                 >
-                  {label}
+                  {name}
                 </T>
                 <div style={{ paddingTop: 8 }}>
                   <T variant="body2">
-                    <b style={{ fontSize: 16 }}>{value}</b>%
+                    <b style={{ fontSize: 16 }}>{Math.round(usage)}</b>%
                     <span style={{ marginLeft: 8 }}>
-                      {t && t.h > 0 && (
+                      {time && time.h > 0 && (
                         <span>
-                          <span style={{ fontSize: 16 }}>{t.h}</span>hr
+                          <span style={{ fontSize: 16 }}>{time.h}</span>hr
                         </span>
                       )}
-                      {t && t.m > 0 && (
+                      {time && time.m > 0 && (
                         <span>
-                          <span style={{ fontSize: 16 }}>{t.m}</span>m
+                          <span style={{ fontSize: 16 }}>{time.m}</span>m
                         </span>
                       )}
                     </span>
@@ -156,10 +156,11 @@ const Chart = ({ data, day, size }) => {
     hideTooltip,
   } = useTooltip()
 
-  const mapped = data.map(([label, color, value]) => ({
-    label: label === "null" ? "" : label,
-    color: label === "null" ? "#fff" : color,
-    value,
+  console.log(data)
+  const mapped = data.map(({ name, color, usage }) => ({
+    label: name === "null" ? "" : name,
+    color: name === "null" ? "#fff" : color,
+    value: usage,
   }))
 
   const sendHighlight = debounce((args) => {
