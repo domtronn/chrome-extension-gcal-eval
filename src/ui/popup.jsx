@@ -400,13 +400,19 @@ const Popup = () => {
       <Grid style={{ padding: "70px 20px 20px" }} container spacing={3}>
         {[summary.weekly]
           .concat(summary.daily)
-          .map(({ day, total, summary }, i) => (
+          .map(({ day, total, accepted, summary }, i) => (
             <TabPanel key={i} value={tab} index={i}>
               <Grid item xs={4}>
                 <Chart size={4 / 12} data={summary} day={day} />
               </Grid>
+
               <Grid item xs={8}>
-                <T variant="h5">{total}</T>
+                <span style={{ display: "inline-flex", alignItems: "center" }}>
+                  <T variant="h5">{total} events</T>
+                  <T style={{ marginLeft: "16px" }} variant="body1">
+                    {accepted} accepted
+                  </T>
+                </span>
                 <Divider style={{ margin: "16px 0" }} />
                 <Leg data={summary} day={day} />
               </Grid>

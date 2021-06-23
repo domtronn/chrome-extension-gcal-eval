@@ -6,21 +6,29 @@ import { selectDays, selectMeetings } from "../utils/selectors"
 export const getMeetingsForDays = ({ dayStart, dayEnd }) =>
   selectDays().map((column) => {
     const [total, day, date] = column.innerText.split(", ")
+    const events = getMeetings(column, { dayStart, dayEnd })
     return {
-      total,
+      total: parseInt(total),
+      accepted: events.length,
       day,
       date,
-      events: getMeetings(column, { dayStart, dayEnd }),
+      events,
     }
   })
+
+const isDate = (d) => {
+  const date = new Date(d)
+  return date instanceof Date && !isNaN(date)
+}
 
 export const getMeetings = (el = document, { dayStart, dayEnd }) =>
   selectMeetings(el)
     .map((node) => {
-      var [time, name, calendar, status, _, day] = node.innerText
+      var [time, name, calendar, status, _, ...days] = node.innerText
         .replace(/\n/g, ", ")
         .split(", ")
 
+      var day = new Date(days.find(isDate))
       var [start, end] = time.split(" to ")
 
       return {

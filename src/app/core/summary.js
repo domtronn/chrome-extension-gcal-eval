@@ -83,9 +83,15 @@ export const daily = (dayStart, dayEnd, config) => {
 }
 
 export const weekly = (dayStart, dayEnd, config) => {
-  const totalEvents = getMeetingsForDays({ dayStart, dayEnd }).reduce(
-    (acc, { total }) => acc + (parseInt(total) || 0),
-    0
+  const [totalEvents, acceptedEvents] = getMeetingsForDays({
+    dayStart,
+    dayEnd,
+  }).reduce(
+    ([t, a], { total, accepted }) => [
+      t + (parseInt(total) || 0),
+      a + (parseInt(accepted) || 0),
+    ],
+    [0, 0]
   )
 
   const totalTime =
@@ -95,7 +101,8 @@ export const weekly = (dayStart, dayEnd, config) => {
 
   return {
     day: "All days",
-    total: `${totalEvents} events`,
+    total: totalEvents,
+    accepted: acceptedEvents,
     summary: summary(totalTime, res, config),
   }
 }

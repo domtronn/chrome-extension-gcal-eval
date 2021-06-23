@@ -87,7 +87,7 @@ const Settings = ({ summary, config = {} }) => {
               <div className="config__item">
                 <div
                   className="config__preview"
-                  style={{ backgroundColoror: color }}
+                  style={{ backgroundColor: color }}
                 />
                 <TextField
                   value={cfg[color] || ""}
